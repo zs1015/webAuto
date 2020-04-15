@@ -1,6 +1,7 @@
 package auto.base;
 
 import auto.pojo.Locator;
+import auto.utils.LocatorUtils;
 import auto.utils.PropertiesUtils;
 import auto.utils.WebAutoUtils;
 import org.openqa.selenium.By;
@@ -57,8 +58,13 @@ public class BaseCases {
     public void click(By by) {
         getElement(by).click();
     }
+
     public void click(Locator locator) {
         getElement(locator).click();
+    }
+
+    public void click(String pageName, String locatorName) {
+        getElement(pageName, locatorName).click();
     }
 
     /**
@@ -71,9 +77,17 @@ public class BaseCases {
         getElement(by).sendKeys(content);
     }
 
+    /**
+     *
+     * @param locator
+     * @param content
+     */
     public void send(Locator locator, String content) {
-
         getElement(locator).sendKeys(content);
+    }
+
+    public void send(String pageName, String locatorName, String content) {
+        getElement(pageName, locatorName).sendKeys(content);
     }
 
     /**
@@ -89,6 +103,7 @@ public class BaseCases {
     public String getTips(Locator locator) {
         return getElement(locator).getText();
     }
+
     /**
      * @param locator
      * @return
@@ -96,6 +111,12 @@ public class BaseCases {
     public WebElement getElement(Locator locator) {
         return getElement(locator, 5L);
     }
+
+    public WebElement getElement(String pageName, String locatorName) {
+        Locator locator = LocatorUtils.getLocatorByPageNameAndLocatorName(pageName, locatorName);
+        return getElement(locator, 5L);
+    }
+
     @Deprecated
     public WebElement getElement(final By by) {
         return getElement(by, 5L);
@@ -221,6 +242,22 @@ public class BaseCases {
         });
         return text;
     }
+
+    public String getTipsNotNull(final String pageName, final String locatorName) {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        String text = wait.until(new ExpectedCondition<String>() {
+            public String apply(WebDriver webDriver) {
+                WebElement element = getElement(pageName,locatorName);//获取元素
+                //元素不为空，文本不为空，且长度大于0
+                if (element != null && element.getText() != null && element.getText().length() > 0) {
+                    return element.getText();
+                }
+                return null;
+            }
+        });
+        return text;
+    }
+
     public WebElement getElementEnabled(final By by) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         Boolean isEnabled = wait.until(new ExpectedCondition<Boolean>() {

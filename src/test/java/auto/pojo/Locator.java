@@ -5,7 +5,7 @@ import lombok.ToString;
 
 /**
  * @author ZS
- * @Description:
+ * @Description: 页面的单个元素定位locator
  * @date 2020/4/14 1:02
  */
 @Data

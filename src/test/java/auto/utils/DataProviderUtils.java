@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * @author ZS
- * @Description:
+ * @Description:  分开数据提供的方法：0415日遗弃
  * @date 2020/4/13 22:30
  */
 public class DataProviderUtils {

@@ -1,16 +1,11 @@
 package auto.test.login;
 
 import auto.base.BaseCases;
-import auto.base.CaseDataProvider;
-import auto.pojo.Locator;
 import auto.pojo.LoginFailData;
 import auto.pojo.LoginSuccessData;
-import auto.utils.LocatorUtils;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.Map;
 
 
 /**
@@ -20,10 +15,10 @@ import java.util.Map;
  * @Description:
  * @date 2020/4/8 23:59
  */
-public class LoginTest extends BaseCases {
+public class LoginTest02 extends BaseCases {
 
 
-    @Test(dataProvider = "getAllCaseData", dataProviderClass = CaseDataProvider.class)
+    @Test(dataProvider = "failCase", dataProviderClass = LoginDataProvider.class)
     public void login_fail_case(LoginFailData loginFailData) {
         to("login_url");
         send("登录页面","手机号",loginFailData.getPhone());
@@ -31,11 +26,20 @@ public class LoginTest extends BaseCases {
         click("登录页面","登录按钮");
         String actualTips = getTipsNotNull("登录页面","提示Tips");
 
+        //读取所有页面的元素定位信息
+        /*Locator phoneLocator = LocatorUtils.getLocatorByPageNameAndLocatorName("登录页面","手机号");
+        Locator pwdLocator = LocatorUtils.getLocatorByPageNameAndLocatorName("登录页面","密码");
+        Locator loginLocator = LocatorUtils.getLocatorByPageNameAndLocatorName("登录页面","登录按钮");
+        Locator tipsLocator = LocatorUtils.getLocatorByPageNameAndLocatorName("登录页面","提示Tips");
+        send(phoneLocator, loginFailData.getPhone());
+        send(pwdLocator, loginFailData.getPassword());
+        click(loginLocator);
+        String actualTips = getTipsNotNull(tipsLocator);*/
         System.out.println(actualTips);
         Assert.assertEquals(actualTips, loginFailData.getExpectedTips());
     }
 
-    @Test(dataProvider = "getAllCaseData", dataProviderClass = CaseDataProvider.class)
+    @Test(dataProvider = "successData", dataProviderClass = LoginDataProvider.class)
     public void login_success_case(LoginSuccessData loginSuccessData) {
         to("login_url");
         send(By.id("mobilephone"), loginSuccessData.getPhone());
